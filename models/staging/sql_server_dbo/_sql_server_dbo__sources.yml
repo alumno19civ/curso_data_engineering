@@ -1,0 +1,175 @@
+version: 2
+
+sources:
+  - name: sql_server_dbo # name of the source
+    schema: sql_server_dbo # this is the schema our raw data lives in
+    database: ALUMNO19DEVBRONZEDB # this is the name of our database
+
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+
+    # freshness:
+    #   warn_after: {count: 24, period: hour}
+    #   error_after: {count: 48, period: hour}
+
+    tables:
+      - name: ADDRESSES #nombre de la tabla
+        loaded_at_field: _fivetran_synced #herramienta de ingesta. tiene dos modalidades; sale como ultima/s columnas de las tablas (snowflake)
+        columns: #cada columna de la tabla name
+          - name: address_id
+            tests:
+                - not_null
+                - unique
+          - name: zipcode
+          - name: country
+          - name: address
+          - name: state
+          - name: date_deleted
+          - name: date_load
+            tests:
+              - not_null
+            
+          #habria que repetir esta estructura por cada tabla que tenga el schema en cuestion, sql_server_dbo en este caso:
+      - name: EVENTS
+        loaded_at_field: _fivetran_synced
+        columns:
+          - name: event_id
+            tests:
+                - not_null
+                - unique
+          - name: page_url
+          - name: event_type
+          - name: user_id
+            tests:
+              - not_null
+              - relationships:
+                    to: ref('stg_sql_server_dbo__users')
+                    field: user_id
+          - name: product_id
+            tests:
+              - not_null
+              - relationships:
+                    to: ref('stg_sql_server_dbo__products')
+                    field: product_id
+          - name: session_id
+          - name: created_at
+          - name: order_id
+            tests:
+              - not_null
+              - relationships:
+                    to: ref('stg_sql_server_dbo__orders')
+                    field: order_id
+          - name: date_deleted
+          - name: date_load
+            tests:
+              - not_null
+
+      - name: ORDERS
+        loaded_at_field: _fivetran_synced
+        columns:
+          - name: order_id
+            tests:
+                - not_null
+                - unique
+          - name: shipping_service
+          - name: shipping_cost
+          - name: address_id
+            tests:
+              - not_null
+              - relationships:
+                    to: ref('stg_sql_server_dbo__addresses')
+                    field: address_id
+          - name: created_at
+          - name: promo_id
+            tests:
+              - not_null
+              - relationships:
+                    to: ref('stg_sql_server_dbo__promos')
+                    field: promo_id
+          - name: estimated_delivery_at
+          - name: order_cost
+          - name: user_id
+            tests:
+              - not_null
+              - relationships:
+                    to: ref('stg_sql_server_dbo__users')
+                    field: user_id
+          - name: order_total
+          - name: delivered_at
+          - name: tracking_id
+          - name: status
+          - name: date_deleted
+          - name: date_load
+            tests:
+              - not_null
+      - name: ORDER_ITEMS
+        loaded_at_field: _fivetran_synced
+        columns:
+          - name: order_id
+            tests:
+                - not_null
+                - unique
+          - name: product_id
+            tests:
+              - not_null
+              - relationships:
+                    to: ref('stg_sql_server_dbo__products')
+                    field: product_id
+          - name: quantity
+          - name: date_deleted
+          - name: date_load
+            tests:
+             - not_null
+      - name: PRODUCTS
+        loaded_at_field: _fivetran_synced
+        columns:
+          - name: product_id
+            tests:
+                - not_null
+                - unique
+          - name: price
+          - name: name
+          - name: inventory
+          - name: date_deleted
+          - name: date_load
+            tests:
+              - not_null
+      - name: PROMOS
+        loaded_at_field: _fivetran_synced
+        columns:
+          - name: promo_id
+            tests:
+                - not_null
+                - unique
+          - name: discount
+          - name: status
+          - name: date_deleted
+          - name: date_load
+            tests:
+              - not_null
+      - name: USERS
+        loaded_at_field: _fivetran_synce
+        columns:
+          - name: user_id
+            tests:
+                - not_null
+                - unique
+          - name: updated_at
+          - name: address_id
+            tests:
+              - not_null
+              - relationships:
+                    to: ref('stg_sql_server_dbo__addresses')
+                    field: address_id
+          - name: last_name
+          - name: created_at
+          - name: phone_number
+          - name: total_orders
+          - name: first_name
+          - name: email
+          - name: date_deleted
+          - name: date_load
+            tests:
+              - not_null
