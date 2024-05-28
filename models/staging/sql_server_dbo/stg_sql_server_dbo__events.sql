@@ -17,8 +17,8 @@ with
             session_id,
             created_at,
             order_id,
-            _fivetran_deleted as date_deleted,
-            _fivetran_synced as date_load
+            coalesce(_fivetran_deleted,false) as date_deleted,
+            convert_timezone('UTC',_fivetran_synced) as date_load
         from src_events
     )
 -- estamos creando un modelo de staging
