@@ -1,6 +1,6 @@
 with
     src_promos as (
-        select * from {{ source("sql_server_dbo", "PROMOS") }}  -- referencia al source que vamos a utilizar
+        select * from {{ ref("base_sql_server_dbo__promos") }}  -- referencia al source que vamos a utilizar
     ),
 
     renamed_casted as (
