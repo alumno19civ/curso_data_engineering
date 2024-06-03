@@ -6,10 +6,10 @@ with
     renamed_casted as (
         select
             promo_id
-            , discount  --el descuento es el descuento total en dolares, no un porcentaje
+            , discount as discount_dollars  --el descuento es el descuento total en dolares, no un porcentaje
             , status
-            , _fivetran_deleted
-            , _fivetran_synced
+            , coalesce(_fivetran_deleted,false) as date_deleted
+            , convert_timezone('UTC',_fivetran_synced) as date_load
         from src_promos
     )
 

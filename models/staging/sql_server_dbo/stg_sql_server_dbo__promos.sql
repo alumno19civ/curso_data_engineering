@@ -7,13 +7,13 @@ with
         select
             md5(promo_id) as promo_id
             , promo_id as description
-            , discount as discount_dollars --el descuento es el descuento total en dolares, no un porcentaje
+            , discount_dollars --el descuento es el descuento total en dolares, no un porcentaje
             ,  case 
                  when status like 'active' then 1
                  when status like 'inactive' then 0 
             end as status_id
-            , coalesce(_fivetran_deleted,false) as date_deleted
-            , convert_timezone('UTC',_fivetran_synced) as date_load
+            , date_deleted
+            , date_load
         from src_promos
     ),
 

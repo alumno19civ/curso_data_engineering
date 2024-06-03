@@ -13,12 +13,12 @@ with
             page_url,
             md5(event_type) as event_type_id,
             user_id,
-            nullif(product_id,'') as product_id,
+            product_id,
             session_id,
-            convert_timezone('UTC',created_at)::date as created_at,
-            nullif(order_id,'') as order_id,
-            coalesce(_fivetran_deleted,false) as date_deleted,
-            convert_timezone('UTC',_fivetran_synced) as date_load
+            created_at,
+            order_id,
+            date_deleted,
+            date_load
         from base_events
     )
 -- estamos creando un modelo de staging
