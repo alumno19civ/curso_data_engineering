@@ -12,16 +12,16 @@ with
             shipping_service,
             shipping_cost,
             address_id,
-            created_at,
+            convert_timezone('UTC',created_at)::date as created_at,
             promo_id,
             estimated_delivery_at,
             order_cost,
             order_total,
             delivered_at,
-            tracking_id,
+            nullif(tracking_id,'') as tracking_id,
             status,
-            _fivetran_deleted,
-           _fivetran_synced
+            coalesce(_fivetran_deleted,false) as date_deleted,
+            convert_timezone('UTC',_fivetran_synced) as date_load
         from src_orders
     )
 
