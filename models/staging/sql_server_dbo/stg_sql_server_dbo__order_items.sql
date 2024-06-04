@@ -9,7 +9,7 @@ with
             product_id,
             quantity,
             coalesce(_fivetran_deleted,false) as date_deleted,
-            convert_timezone('UTC',_fivetran_synced) as date_load
+            convert_timezone('UTC',_fivetran_synced)::date as date_load
         from src_order_items
     )
 -- estamos creando un modelo de staging

@@ -13,8 +13,8 @@ with
             session_id,
             convert_timezone('UTC',created_at)::date as created_at,
             nullif(order_id,'') as order_id,
-            coalesce(_fivetran_deleted,false) as date_deleted,
-            convert_timezone('UTC',_fivetran_synced) as date_load
+            coalesce(_fivetran_deleted,false) date_deleted,
+            convert_timezone('UTC',_fivetran_synced)::date as date_load
         from src_events
     )
 -- estamos creando un modelo de staging

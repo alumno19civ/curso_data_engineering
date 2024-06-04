@@ -7,3 +7,6 @@ packages:
     
   - package: calogica/dbt_expectations
     version: 0.10.3
+
+  - package: calogica/dbt_date
+    version: 0.9.2

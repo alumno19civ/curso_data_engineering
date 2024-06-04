@@ -19,7 +19,7 @@ with
             a.phone_number,
             COUNT(b.order_id) OVER (PARTITION BY b.user_id) as total_orders,
             coalesce(a._fivetran_deleted,false) as date_deleted,
-            convert_timezone('UTC',a._fivetran_synced) as date_load
+            convert_timezone('UTC',a._fivetran_synced)::date as date_load
         from src_users a
         left join src_orders b
             on a.user_id = b.user_id

@@ -9,7 +9,7 @@ with
             , discount as discount_dollars  --el descuento es el descuento total en dolares, no un porcentaje
             , status
             , coalesce(_fivetran_deleted,false) as date_deleted
-            , convert_timezone('UTC',_fivetran_synced) as date_load
+            , convert_timezone('UTC',_fivetran_synced)::date as date_load
         from src_promos
     )
 

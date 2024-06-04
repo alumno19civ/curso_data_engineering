@@ -14,14 +14,14 @@ with
             address_id,
             convert_timezone('UTC',created_at)::date as created_at,
             promo_id,
-            estimated_delivery_at,
+            estimated_delivery_at::date as estimated_delivery_at,
             order_cost,
             order_total,
-            delivered_at,
+            delivered_at::date as delivered_at,
             nullif(tracking_id,'') as tracking_id,
             status,
             coalesce(_fivetran_deleted,false) as date_deleted,
-            convert_timezone('UTC',_fivetran_synced) as date_load
+            convert_timezone('UTC',_fivetran_synced)::date as date_load
         from src_orders
     )
 
