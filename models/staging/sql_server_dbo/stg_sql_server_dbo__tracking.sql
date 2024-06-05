@@ -7,7 +7,6 @@ with
         select
             tracking_id,
             md5(shipping_service) as shipping_service_id,
-            shipping_cost,
             estimated_delivery_at,
             delivered_at
         from src_orders

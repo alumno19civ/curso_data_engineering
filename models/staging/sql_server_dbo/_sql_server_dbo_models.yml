@@ -120,6 +120,10 @@ models:
         data_type: varchar
         description: ""
 
+      - name: shipping_cost
+        data_type: float
+        description: ""
+
       - name: address_id
         data_type: varchar
         description: ""
@@ -241,10 +245,6 @@ models:
 
       - name: shipping_service_id
         data_type: varchar
-        description: ""
-
-      - name: shipping_cost
-        data_type: float
         description: ""
 
       - name: estimated_delivery_at

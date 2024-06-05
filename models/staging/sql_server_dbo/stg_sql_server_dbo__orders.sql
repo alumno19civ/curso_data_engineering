@@ -14,6 +14,7 @@ with
             else md5(promo_id) end as promo_id,
             order_cost,
             order_total,
+            shipping_cost,
             tracking_id,
             case 
                 when status like 'preparing' then 0
