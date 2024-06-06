@@ -1,0 +1,225 @@
+version: 2
+
+models:
+  - name: dim_addresses
+    description: ""
+    columns:
+      - name: address_id
+        data_type: varchar
+        description: ""
+
+      - name: address
+        data_type: varchar
+        description: ""
+
+      - name: zipcode
+        data_type: number
+        description: ""
+
+      - name: state
+        data_type: varchar
+        description: ""
+
+      - name: country
+        data_type: varchar
+        description: ""
+
+  - name: dim_products
+    description: ""
+    columns:
+      - name: product_id
+        data_type: varchar
+        description: ""
+
+      - name: name
+        data_type: varchar
+        description: ""
+
+      - name: price
+        data_type: float
+        description: ""
+
+      - name: inventory
+        data_type: number
+        description: ""
+
+  - name: dim_promo
+    description: ""
+    columns:
+      - name: promo_id
+        data_type: varchar
+        description: ""
+
+      - name: description
+        data_type: varchar
+        description: ""
+
+      - name: discount_dollars
+        data_type: number
+        description: ""
+
+      - name: status
+        data_type: number
+        description: ""
+
+  - name: dim_shipping_service
+    description: ""
+    columns:
+      - name: shipping_service_id
+        data_type: varchar
+        description: ""
+
+      - name: shipping_service
+        data_type: varchar
+        description: ""
+
+  - name: dim_status
+    description: ""
+    columns:
+      - name: status_id
+        data_type: number
+        description: ""
+
+      - name: description
+        data_type: varchar
+        description: ""
+
+  - name: dim_time
+    description: ""
+    columns:
+      - name: date_id
+        data_type: date
+        description: ""
+
+      - name: day_of_week
+        data_type: number
+        description: ""
+
+      - name: day_of_week_name
+        data_type: varchar
+        description: ""
+
+      - name: day_of_month
+        data_type: number
+        description: ""
+
+      - name: day_of_year
+        data_type: number
+        description: ""
+
+      - name: week_of_year
+        data_type: number
+        description: ""
+
+      - name: month_name
+        data_type: varchar
+        description: ""
+
+      - name: month_of_year
+        data_type: number
+        description: ""
+
+      - name: quarter_of_year
+        data_type: number
+        description: ""
+
+      - name: year_number
+        data_type: number
+        description: ""
+
+  - name: dim_users
+    description: ""
+    columns:
+      - name: user_id
+        data_type: varchar
+        description: ""
+
+      - name: first_name
+        data_type: varchar
+        description: ""
+
+      - name: last_name
+        data_type: varchar
+        description: ""
+
+      - name: email
+        data_type: varchar
+        description: ""
+
+      - name: phone_number
+        data_type: varchar
+        description: ""
+
+      - name: total_orders
+        data_type: number
+        description: ""
+
+  - name: dim_tracking_status
+    description: ""
+    columns:
+      - name: tracking_status_id
+        data_type: number
+        description: ""
+
+      - name: description
+        data_type: varchar
+        description: ""
+
+  - name: fct_order_products
+    description: ""
+    columns:
+      - name: order_id
+        data_type: varchar
+        description: ""
+
+      - name: product_id
+        data_type: varchar
+        description: ""
+
+      - name: user_id
+        data_type: varchar
+        description: ""
+
+      - name: address_id
+        data_type: varchar
+        description: ""
+
+      - name: promo_id
+        data_type: varchar
+        description: ""
+
+      - name: tracking_status_id
+        data_type: number
+        description: ""
+
+      - name: shipping_service_id
+        data_type: varchar
+        description: ""
+
+      - name: quantity
+        data_type: number
+        description: ""
+
+      - name: total_price_xproduct
+        data_type: float
+        description: ""
+
+      - name: order_cost
+        data_type: float
+        description: ""
+
+      - name: shipping_cost_xproduct
+        data_type: float
+        description: ""
+
+      - name: shipping_cost
+        data_type: float
+        description: ""
+
+      - name: order_total
+        data_type: float
+        description: ""
+
+      - name: total_discount
+        data_type: float
+        description: ""

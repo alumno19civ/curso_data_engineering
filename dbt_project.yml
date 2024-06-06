@@ -36,11 +36,30 @@ clean-targets:         # directories to be removed by `dbt clean`
 # using the `{{ config(...) }}` macro.
 
 models:
+  +transient: false
   curso_data_eng:
     # Applies to all files under models/example/
     staging:
       +materialized: view
+      +database: "{{ env_var('DBT_ENVIRONMENTS') }}SILVER_DB"
+      google_sheets:
+        +schema: google_sheets
+      sql_server_dbo:
+        +schema: sql_server_dbo
     marts:
       +materialized: table
+      +database: "{{ env_var('DBT_ENVIRONMENTS') }}_GOLD_DB"
+      core:
+        +schema: core
     
-    #No es obligatorio definir la materialización en cada modelo (.sql) sino que se puede definir para conjuntos de modelos en el fichero dbt_project.yml
+  
+    models:
+
+    seeds:
+      +schema: seed_data
+      +database: "{{ env_var('DBT_ENVIRONMENTS') }}BRONZEDB"      
+
+    snapshots:
+      +transient: false
+      +target_database: "{{ env_var('DBT_ENVIRONMENTS') }}SILVER_DB"
+      +target_schema: snapshots
