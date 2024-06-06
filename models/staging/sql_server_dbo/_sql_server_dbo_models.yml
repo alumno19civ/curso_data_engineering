@@ -61,10 +61,18 @@ models:
       - name: user_id
         data_type: varchar
         description: ""
+        tests:
+          - relationships:
+                  to: ref('stg_sql_server_dbo__users')
+                  field: user_id
 
       - name: product_id
         data_type: varchar
         description: ""
+        tests:
+          - relationships:
+                  to: ref('stg_sql_server_dbo__products')
+                  field: product_id
 
       - name: session_id
         data_type: varchar
@@ -77,6 +85,10 @@ models:
       - name: order_id
         data_type: varchar
         description: ""
+        tests:
+          - relationships:
+                  to: ref('stg_sql_server_dbo__orders')
+                  field: order_id
 
       - name: date_deleted
         data_type: boolean
@@ -92,10 +104,18 @@ models:
       - name: order_id
         data_type: varchar
         description: ""
+        tests:
+          - relationships:
+                  to: ref('stg_sql_server_dbo__orders')
+                  field: order_id
 
       - name: product_id
         data_type: varchar
         description: ""
+        tests:
+          - relationships:
+                  to: ref('stg_sql_server_dbo__products')
+                  field: product_id
 
       - name: quantity
         data_type: number
@@ -119,6 +139,10 @@ models:
       - name: user_id
         data_type: varchar
         description: ""
+        tests:
+          - relationships:
+                  to: ref('stg_sql_server_dbo__users')
+                  field: user_id
 
       - name: shipping_cost
         data_type: float
@@ -127,6 +151,10 @@ models:
       - name: address_id
         data_type: varchar
         description: ""
+        tests:
+          - relationships:
+                  to: ref('stg_sql_server_dbo__addresses')
+                  field: address_id
 
       - name: created_at
         data_type: date
@@ -135,6 +163,10 @@ models:
       - name: promo_id
         data_type: varchar
         description: ""
+        tests:
+          - relationships:
+                  to: ref('stg_sql_server_dbo__promos')
+                  field: promo_id
 
       - name: order_cost
         data_type: float
@@ -147,10 +179,18 @@ models:
       - name: tracking_id
         data_type: varchar
         description: ""
+        tests:
+          - relationships:
+                  to: ref('stg_sql_server_dbo__tracking')
+                  field: tracking_id
 
       - name: tracking_status_id
         data_type: number
         description: ""
+        tests:
+          - relationships:
+                  to: ref('stg_sql_server_dbo__tracking_status')
+                  field: tracking_status_id
 
       - name: date_deleted
         data_type: boolean
@@ -205,6 +245,10 @@ models:
       - name: status_id
         data_type: number
         description: ""
+        tests:
+          - relationships:
+                  to: ref('stg_sql_server_dbo__status')
+                  field: status_id
 
       - name: date_deleted
         data_type: boolean
@@ -246,6 +290,10 @@ models:
       - name: shipping_service_id
         data_type: varchar
         description: ""
+        tests:
+          - relationships:
+                  to: ref('stg_sql_server_dbo__shipping_service')
+                  field: shipping_service_id
 
       - name: estimated_delivery_at
         data_type: timestamp_tz
@@ -288,6 +336,10 @@ models:
       - name: address_id
         data_type: varchar
         description: ""
+        tests:
+          - relationships:
+                  to: ref('stg_sql_server_dbo__addresses')
+                  field: address_id
 
       - name: created_at
         data_type: date
