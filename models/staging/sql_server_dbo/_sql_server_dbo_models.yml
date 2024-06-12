@@ -2,65 +2,65 @@ version: 2
 
 models:
   - name: stg_sql_server_dbo__addresses
-    description: ""
+    description: "collect data on addresses that affect our business"
     columns:
       - name: address_id
         data_type: varchar
-        description: ""
+        description: "primary key: address"
 
       - name: zipcode
         data_type: number
-        description: ""
+        description: "5-digit numbers developed by the United States Postal Service to represent individual post offices across the United States"
 
       - name: country
         data_type: varchar
-        description: ""
+        description: "country"
 
       - name: address
         data_type: varchar
-        description: ""
+        description: "Number and street"
 
       - name: state
         data_type: varchar
-        description: ""
+        description: "state"
 
       - name: date_deleted
         data_type: boolean
-        description: ""
+        description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
         data_type: timestamp_tz
-        description: ""
+        description: "Data upload timestamp"
 
   - name: stg_sql_server_dbo__event_type
-    description: ""
+    description: "Collects al the possible actions that a user can do"
     columns:
       - name: event_type_id
         data_type: varchar
-        description: ""
+        description: "primary key: event type"
 
       - name: event_type
         data_type: varchar
-        description: ""
+        description: "event type name"
 
   - name: stg_sql_server_dbo__events
-    description: ""
+    description: "An event is any type of action that a user can do on our business website. This table collects the data of all the events performed"
     columns:
       - name: event_id
         data_type: varchar
-        description: ""
+        description: "primary key: event"
 
       - name: page_url
         data_type: varchar
-        description: ""
+        description: "URL of the page to which the event takes place"
 
       - name: event_type_id
         data_type: varchar
-        description: ""
+        description: "Foreign key: event type"
 
       - name: user_id
         data_type: varchar
-        description: ""
+        description: "Foreign key: user"
         tests:
           - relationships:
                   to: ref('stg_sql_server_dbo__users')
@@ -68,7 +68,7 @@ models:
 
       - name: product_id
         data_type: varchar
-        description: ""
+        description: "Foreign key: product"
         tests:
           - relationships:
                   to: ref('stg_sql_server_dbo__products')
@@ -76,15 +76,15 @@ models:
 
       - name: session_id
         data_type: varchar
-        description: ""
+        description: "Key of the session in which the event took place"
 
       - name: created_at
         data_type: date
-        description: ""
+        description: "timestamp indicating when the event was created"
 
       - name: order_id
         data_type: varchar
-        description: ""
+        description: "Foreign key: order"
         tests:
           - relationships:
                   to: ref('stg_sql_server_dbo__orders')
@@ -92,18 +92,18 @@ models:
 
       - name: date_deleted
         data_type: boolean
-        description: ""
+        description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
         data_type: timestamp_tz
-        description: ""
+        description: "Data upload timestamp"
 
   - name: stg_sql_server_dbo__order_items
-    description: ""
+    description: "associates orders and products sold for each order"
     columns:
       - name: order_id
         data_type: varchar
-        description: ""
+        description: "Foreign key: order"
         tests:
           - relationships:
                   to: ref('stg_sql_server_dbo__orders')
@@ -111,7 +111,7 @@ models:
 
       - name: product_id
         data_type: varchar
-        description: ""
+        description: "Foreign key: product"
         tests:
           - relationships:
                   to: ref('stg_sql_server_dbo__products')
@@ -119,26 +119,26 @@ models:
 
       - name: quantity
         data_type: number
-        description: ""
+        description: "Quantity of the same product sold in the same order"
 
       - name: date_deleted
         data_type: boolean
-        description: ""
+        description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
         data_type: timestamp_tz
-        description: ""
+        description: "Data upload timestamp"
 
   - name: stg_sql_server_dbo__orders
-    description: ""
+    description: "Collects all data associated with an order"
     columns:
       - name: order_id
         data_type: varchar
-        description: ""
+        description: "primary key: orders"
 
       - name: user_id
         data_type: varchar
-        description: ""
+        description: "Foreign key: user"
         tests:
           - relationships:
                   to: ref('stg_sql_server_dbo__users')
@@ -146,11 +146,11 @@ models:
 
       - name: shipping_cost
         data_type: float
-        description: ""
+        description: "additional cost associated with shipping"
 
       - name: address_id
         data_type: varchar
-        description: ""
+        description: "Foreign key: address"
         tests:
           - relationships:
                   to: ref('stg_sql_server_dbo__addresses')
@@ -158,11 +158,11 @@ models:
 
       - name: created_at
         data_type: date
-        description: ""
+        description: "timestamp indicating when the order was created"
 
       - name: promo_id
         data_type: varchar
-        description: ""
+        description: "Foreign key: promo"
         tests:
           - relationships:
                   to: ref('stg_sql_server_dbo__promos')
@@ -170,15 +170,15 @@ models:
 
       - name: order_cost
         data_type: float
-        description: ""
+        description: "Total cost of the products sold without additional shipping costs"
 
       - name: order_total
         data_type: float
-        description: ""
+        description: "Total cost including shipping costs"
 
       - name: tracking_id
         data_type: varchar
-        description: ""
+        description: "Foreign key: tracking"
         tests:
           - relationships:
                   to: ref('stg_sql_server_dbo__tracking')
@@ -186,7 +186,7 @@ models:
 
       - name: tracking_status_id
         data_type: number
-        description: ""
+        description: "Foreign key: traking status"
         tests:
           - relationships:
                   to: ref('stg_sql_server_dbo__tracking_status')
@@ -194,57 +194,57 @@ models:
 
       - name: date_deleted
         data_type: boolean
-        description: ""
+        description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
         data_type: timestamp_tz
-        description: ""
+        description: "Data upload timestamp"
 
   - name: stg_sql_server_dbo__products
-    description: ""
+    description: "Collects all data associated with the products sold in the company"
     columns:
       - name: product_id
         data_type: varchar
-        description: ""
+        description: "primary key: product"
 
       - name: price
         data_type: float
-        description: ""
+        description: "price of the product"
 
       - name: name
         data_type: varchar
-        description: ""
+        description: "name of the product"
 
       - name: inventory
         data_type: number
-        description: ""
+        description: "number of units of the product in stock"
 
       - name: date_deleted
         data_type: boolean
-        description: ""
+        description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
         data_type: timestamp_tz
-        description: ""
+        description: "Data upload timestamp"
 
   - name: stg_sql_server_dbo__promos
-    description: ""
+    description: "Collects data on promotions that the company has ever carried out"
     columns:
       - name: promo_id
         data_type: varchar
-        description: ""
+        description: "primary key: promo"
 
       - name: description
         data_type: varchar
-        description: ""
+        description: "name of the promotion"
 
       - name: discount_dollars
         data_type: number
-        description: ""
+        description: "total dollar discount"
 
       - name: status_id
         data_type: number
-        description: ""
+        description: "Foreign key: promo status"
         tests:
           - relationships:
                   to: ref('stg_sql_server_dbo__status')
@@ -252,44 +252,44 @@ models:
 
       - name: date_deleted
         data_type: boolean
-        description: ""
+        description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
         data_type: timestamp_tz
-        description: ""
+        description: "Data upload timestamp"
 
   - name: stg_sql_server_dbo__shipping_service
-    description: ""
+    description: "Collects the names of the companies that carry out the shipment"
     columns:
       - name: shipping_service_id
         data_type: varchar
-        description: ""
+        description: "primary key: shipping service"
 
       - name: shipping_service
         data_type: varchar
-        description: ""
+        description: "name of the company that carry out the shipment"
 
   - name: stg_sql_server_dbo__status
-    description: ""
+    description: "Collects the type of the status of promotions (active/inactive)"
     columns:
       - name: status_id
         data_type: number
-        description: ""
+        description: "primary key: promo status (0/1)"
 
       - name: description
         data_type: varchar
-        description: ""
+        description: "type of status: active/inactive"
 
   - name: stg_sql_server_dbo__tracking
-    description: ""
+    description: "Collects the data specific to the shipment"
     columns:
       - name: tracking_id
         data_type: varchar
-        description: ""
+        description: "primary key: tracking"
 
       - name: shipping_service_id
         data_type: varchar
-        description: ""
+        description: "Foreign key: shipping service"
         tests:
           - relationships:
                   to: ref('stg_sql_server_dbo__shipping_service')
@@ -297,45 +297,45 @@ models:
 
       - name: estimated_delivery_at
         data_type: timestamp_tz
-        description: ""
+        description: "estimated date of delivery"
 
       - name: delivered_at
         data_type: timestamp_tz
-        description: ""
+        description: "Date of actual delivery"
 
   - name: stg_sql_server_dbo__tracking_status
-    description: ""
+    description: "Collects shipping status types."
     columns:
       - name: tracking_status_id
         data_type: number
-        description: ""
+        description: "primary key: tracking status"
 
       - name: description
         data_type: varchar
-        description: ""
+        description: "type of status: preparing, shipped, delivered"
 
   - name: stg_sql_server_dbo__users
-    description: ""
+    description: "Collects all users' own data"
     columns:
       - name: user_id
         data_type: varchar
-        description: ""
+        description: "primary key: user"
 
       - name: first_name
         data_type: varchar
-        description: ""
+        description: "User's first name"
 
       - name: last_name
         data_type: varchar
-        description: ""
+        description: "User's last name"
 
       - name: email
         data_type: varchar
-        description: ""
+        description: "User's email"
 
       - name: address_id
         data_type: varchar
-        description: ""
+        description: "Foreign key: address"
         tests:
           - relationships:
                   to: ref('stg_sql_server_dbo__addresses')
@@ -343,24 +343,24 @@ models:
 
       - name: created_at
         data_type: date
-        description: ""
+        description: "Date of creation of the user record"
 
       - name: updated_at
         data_type: date
-        description: ""
+        description: "Date of update od user data"
 
       - name: phone_number
         data_type: varchar
-        description: ""
+        description: "User's phone number"
 
       - name: total_orders
         data_type: number
-        description: ""
+        description: "User's total orders"
 
       - name: date_deleted
         data_type: boolean
-        description: ""
+        description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
         data_type: timestamp_tz
-        description: ""
+        description: "Data upload timestamp"
