@@ -4,14 +4,14 @@ with
     ),
 
     renamed_casted as (
-        select
+        select distinct
             order_id,
             user_id,
             address_id,
             created_at,
             case 
                 when promo_id = '' then md5('sin promocion') 
-            else md5(promo_id) end as promo_id,
+            else {{dbt_utils.generate_surrogate_key(['promo_id'])}} end as promo_id,
             order_cost,
             order_total,
             shipping_cost,

@@ -27,7 +27,7 @@ sources:
           - name: address
           - name: state
           - name: date_deleted
-          - name: date_load
+          - name: _fivetran_synced
             tests:
               - not_null
             
@@ -45,24 +45,23 @@ sources:
             tests:
               - not_null
               - relationships:
-                    to: ref('stg_sql_server_dbo__users')
+                    to: source('sql_server_dbo', 'users')
                     field: user_id
           - name: product_id
             tests:
               - not_null
               - relationships:
-                    to: ref('stg_sql_server_dbo__products')
+                    to: source('sql_server_dbo', 'products')
                     field: product_id
           - name: session_id
           - name: created_at
           - name: order_id
             tests:
-              - not_null
               - relationships:
-                    to: ref('stg_sql_server_dbo__orders')
+                    to: source('sql_server_dbo', 'orders')
                     field: order_id
           - name: date_deleted
-          - name: date_load
+          - name: _fivetran_synced
             tests:
               - not_null
 
@@ -79,14 +78,14 @@ sources:
             tests:
               - not_null
               - relationships:
-                    to: ref('stg_sql_server_dbo__addresses')
+                    to: source('sql_server_dbo', 'addresses')
                     field: address_id
           - name: created_at
           - name: promo_id
             tests:
               - not_null
               - relationships:
-                    to: ref('stg_sql_server_dbo__promos')
+                    to: source('sql_server_dbo', 'promos')
                     field: promo_id
           - name: estimated_delivery_at
           - name: order_cost
@@ -94,14 +93,14 @@ sources:
             tests:
               - not_null
               - relationships:
-                    to: ref('stg_sql_server_dbo__users')
+                    to: source('sql_server_dbo', 'users')
                     field: user_id
           - name: order_total
           - name: delivered_at
           - name: tracking_id
           - name: status
           - name: date_deleted
-          - name: date_load
+          - name: _fivetran_synced
             tests:
               - not_null
       - name: ORDER_ITEMS
@@ -110,16 +109,15 @@ sources:
           - name: order_id
             tests:
                 - not_null
-                - unique
           - name: product_id
             tests:
               - not_null
               - relationships:
-                    to: ref('stg_sql_server_dbo__products')
+                    to: source('sql_server_dbo', 'products')
                     field: product_id
           - name: quantity
           - name: date_deleted
-          - name: date_load
+          - name: _fivetran_synced
             tests:
              - not_null
       - name: PRODUCTS
@@ -133,7 +131,7 @@ sources:
           - name: name
           - name: inventory
           - name: date_deleted
-          - name: date_load
+          - name: _fivetran_synced
             tests:
               - not_null
       - name: PROMOS
@@ -146,7 +144,7 @@ sources:
           - name: discount
           - name: status
           - name: date_deleted
-          - name: date_load
+          - name: _fivetran_synced
             tests:
               - not_null
       - name: USERS
@@ -161,7 +159,7 @@ sources:
             tests:
               - not_null
               - relationships:
-                    to: ref('stg_sql_server_dbo__addresses')
+                    to: source('sql_server_dbo', 'addresses')
                     field: address_id
           - name: last_name
           - name: created_at
@@ -170,6 +168,6 @@ sources:
           - name: first_name
           - name: email
           - name: date_deleted
-          - name: date_load
+          - name: _fivetran_synced
             tests:
               - not_null

@@ -11,7 +11,7 @@ with
         select
             event_id,
             page_url,
-            md5(event_type) as event_type_id,
+            {{dbt_utils.generate_surrogate_key(['event_type'])}} as event_type_id,
             user_id,
             product_id,
             session_id,

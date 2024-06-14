@@ -4,7 +4,7 @@ with
     ),
 
     renamed_casted as (
-        select
+        select distinct
             product_id,
             price,
             name,
