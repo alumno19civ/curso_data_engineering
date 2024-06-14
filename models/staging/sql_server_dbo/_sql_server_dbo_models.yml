@@ -3,10 +3,19 @@ version: 2
 models:
   - name: stg_sql_server_dbo__addresses
     description: "collect data on addresses that affect our business"
+    config:
+      contract:
+        enforced: true
     columns:
       - name: address_id
         data_type: varchar
         description: "primary key: address"
+        tests:
+          - unique
+          - not_null
+        constraints:
+          - type: not_null
+          - type: unique
 
       - name: zipcode
         data_type: number
@@ -29,15 +38,26 @@ models:
         description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
-        data_type: timestamp_tz
+        data_type: date
         description: "Data upload timestamp"
+        tests:
+          - not_null
 
   - name: stg_sql_server_dbo__event_type
     description: "Collects al the possible actions that a user can do"
+    config:
+      contract:
+        enforced: true
     columns:
       - name: event_type_id
         data_type: varchar
         description: "primary key: event type"
+        tests:
+          - unique
+          - not_null
+        constraints:
+          - type: not_null
+          - type: unique
 
       - name: event_type
         data_type: varchar
@@ -45,10 +65,19 @@ models:
 
   - name: stg_sql_server_dbo__events
     description: "An event is any type of action that a user can do on our business website. This table collects the data of all the events performed"
+    config:
+      contract:
+        enforced: true
     columns:
       - name: event_id
         data_type: varchar
         description: "primary key: event"
+        tests:
+          - unique
+          - not_null
+        constraints:
+          - type: not_null
+          - type: unique
 
       - name: page_url
         data_type: varchar
@@ -57,14 +86,24 @@ models:
       - name: event_type_id
         data_type: varchar
         description: "Foreign key: event type"
+        tests:
+          - not_null
+          - relationships:
+                  to: ref('stg_sql_server_dbo__event_type')
+                  field: event_type_id
+        constraints:
+          - type: not_null
 
       - name: user_id
         data_type: varchar
         description: "Foreign key: user"
         tests:
+          - not_null
           - relationships:
                   to: ref('stg_sql_server_dbo__users')
                   field: user_id
+        constraints:
+          - type: not_null
 
       - name: product_id
         data_type: varchar
@@ -72,11 +111,15 @@ models:
         tests:
           - relationships:
                   to: ref('stg_sql_server_dbo__products')
-                  field: product_id
+                  field: product_id    
 
       - name: session_id
         data_type: varchar
         description: "Key of the session in which the event took place"
+        tests:
+          - not_null
+        constraints:
+          - type: not_null
 
       - name: created_at
         data_type: date
@@ -95,28 +138,48 @@ models:
         description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
-        data_type: timestamp_tz
+        data_type: date
         description: "Data upload timestamp"
+        tests:
+          - not_null
 
   - name: stg_sql_server_dbo__order_items
     description: "associates orders and products sold for each order"
+    config:
+      contract:
+        enforced: true
     columns:
+      - name: order_item_id
+        data_type: varchar
+        description: "primary key: order_item"
+        tests:
+          - unique
+          - not_null
+        constraints:
+          - type: not_null
+          - type: unique
       - name: order_id
         data_type: varchar
         description: "Foreign key: order"
         tests:
+          - not_null
           - relationships:
                   to: ref('stg_sql_server_dbo__orders')
                   field: order_id
+        constraints:
+          - type: not_null
 
       - name: product_id
         data_type: varchar
         description: "Foreign key: product"
         tests:
+          - not_null
           - relationships:
                   to: ref('stg_sql_server_dbo__products')
                   field: product_id
-
+        constraints:
+          - type: not_null
+          
       - name: quantity
         data_type: number
         description: "Quantity of the same product sold in the same order"
@@ -126,23 +189,37 @@ models:
         description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
-        data_type: timestamp_tz
+        data_type: date
         description: "Data upload timestamp"
+        tests:
+          - not_null
 
   - name: stg_sql_server_dbo__orders
     description: "Collects all data associated with an order"
+    config:
+      contract:
+        enforced: true
     columns:
       - name: order_id
         data_type: varchar
         description: "primary key: orders"
+        tests:
+          - unique
+          - not_null
+        constraints:
+          - type: not_null
+          - type: unique
 
       - name: user_id
         data_type: varchar
         description: "Foreign key: user"
         tests:
+          - not_null
           - relationships:
                   to: ref('stg_sql_server_dbo__users')
                   field: user_id
+        constraints:
+          - type: not_null          
 
       - name: shipping_cost
         data_type: float
@@ -152,9 +229,12 @@ models:
         data_type: varchar
         description: "Foreign key: address"
         tests:
+          - not_null
           - relationships:
                   to: ref('stg_sql_server_dbo__addresses')
                   field: address_id
+        constraints:
+          - type: not_null
 
       - name: created_at
         data_type: date
@@ -164,9 +244,12 @@ models:
         data_type: varchar
         description: "Foreign key: promo"
         tests:
+          - not_null
           - relationships:
                   to: ref('stg_sql_server_dbo__promos')
                   field: promo_id
+        constraints:
+          - type: not_null
 
       - name: order_cost
         data_type: float
@@ -182,30 +265,44 @@ models:
         tests:
           - relationships:
                   to: ref('stg_sql_server_dbo__tracking')
-                  field: tracking_id
+                  field: tracking_id     
 
       - name: tracking_status_id
         data_type: number
         description: "Foreign key: traking status"
         tests:
+          - not_null
           - relationships:
                   to: ref('stg_sql_server_dbo__tracking_status')
                   field: tracking_status_id
+        constraints:
+          - type: not_null
 
       - name: date_deleted
         data_type: boolean
         description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
-        data_type: timestamp_tz
+        data_type: date
         description: "Data upload timestamp"
+        tests:
+          - not_null
 
   - name: stg_sql_server_dbo__products
     description: "Collects all data associated with the products sold in the company"
+    config:
+      contract:
+        enforced: true
     columns:
       - name: product_id
         data_type: varchar
         description: "primary key: product"
+        tests:
+          - unique
+          - not_null
+        constraints:
+          - type: not_null
+          - type: unique
 
       - name: price
         data_type: float
@@ -224,15 +321,26 @@ models:
         description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
-        data_type: timestamp_tz
+        data_type: date
         description: "Data upload timestamp"
+        tests:
+          - not_null
 
   - name: stg_sql_server_dbo__promos
     description: "Collects data on promotions that the company has ever carried out"
+    config:
+      contract:
+        enforced: true
     columns:
       - name: promo_id
         data_type: varchar
         description: "primary key: promo"
+        tests:
+          - unique
+          - not_null
+        constraints:
+          - type: not_null
+          - type: unique
 
       - name: description
         data_type: varchar
@@ -246,24 +354,38 @@ models:
         data_type: number
         description: "Foreign key: promo status"
         tests:
+          - not_null
           - relationships:
                   to: ref('stg_sql_server_dbo__status')
                   field: status_id
-
+        constraints:
+          - type: not_null
+          
       - name: date_deleted
         data_type: boolean
         description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
-        data_type: timestamp_tz
+        data_type: date
         description: "Data upload timestamp"
+        tests:
+          - not_null
 
   - name: stg_sql_server_dbo__shipping_service
     description: "Collects the names of the companies that carry out the shipment"
+    config:
+      contract:
+        enforced: true
     columns:
       - name: shipping_service_id
         data_type: varchar
         description: "primary key: shipping service"
+        tests:
+          - unique
+          - not_null
+        constraints:
+          - type: not_null
+          - type: unique
 
       - name: shipping_service
         data_type: varchar
@@ -271,10 +393,19 @@ models:
 
   - name: stg_sql_server_dbo__status
     description: "Collects the type of the status of promotions (active/inactive)"
+    config:
+      contract:
+        enforced: true
     columns:
       - name: status_id
         data_type: number
         description: "primary key: promo status (0/1)"
+        tests:
+          - unique
+          - not_null
+        constraints:
+          - type: not_null
+          - type: unique
 
       - name: description
         data_type: varchar
@@ -282,33 +413,54 @@ models:
 
   - name: stg_sql_server_dbo__tracking
     description: "Collects the data specific to the shipment"
+    config:
+      contract:
+        enforced: true
     columns:
       - name: tracking_id
         data_type: varchar
         description: "primary key: tracking"
+        tests:
+          - unique
+          - not_null
+        constraints:
+          - type: not_null
+          - type: unique
 
       - name: shipping_service_id
         data_type: varchar
         description: "Foreign key: shipping service"
         tests:
+          - not_null
           - relationships:
                   to: ref('stg_sql_server_dbo__shipping_service')
                   field: shipping_service_id
+        constraints:
+          - type: not_null
 
       - name: estimated_delivery_at
-        data_type: timestamp_tz
+        data_type: date
         description: "estimated date of delivery"
 
       - name: delivered_at
-        data_type: timestamp_tz
+        data_type: date
         description: "Date of actual delivery"
 
   - name: stg_sql_server_dbo__tracking_status
     description: "Collects shipping status types."
+    config:
+      contract:
+        enforced: true
     columns:
       - name: tracking_status_id
         data_type: number
         description: "primary key: tracking status"
+        tests:
+          - unique
+          - not_null
+        constraints:
+          - type: not_null
+          - type: unique
 
       - name: description
         data_type: varchar
@@ -316,10 +468,19 @@ models:
 
   - name: stg_sql_server_dbo__users
     description: "Collects all users' own data"
+    config:
+      contract:
+        enforced: true
     columns:
       - name: user_id
         data_type: varchar
         description: "primary key: user"
+        tests:
+          - unique
+          - not_null
+        constraints:
+          - type: not_null
+          - type: unique
 
       - name: first_name
         data_type: varchar
@@ -337,9 +498,12 @@ models:
         data_type: varchar
         description: "Foreign key: address"
         tests:
+          - not_null
           - relationships:
                   to: ref('stg_sql_server_dbo__addresses')
                   field: address_id
+        constraints:
+          - type: not_null          
 
       - name: created_at
         data_type: date
@@ -362,5 +526,7 @@ models:
         description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
-        data_type: timestamp_tz
+        data_type: date
         description: "Data upload timestamp"
+        tests:
+          - not_null

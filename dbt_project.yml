@@ -59,7 +59,7 @@ models:
       +schema: seed_data
       +database: "{{ env_var('DBT_ENVIRONMENTS') }}BRONZEDB"      
 
-    snapshots:
-      +transient: false
-      +target_database: "{{ env_var('DBT_ENVIRONMENTS') }}SILVER_DB"
-      +target_schema: snapshots
+    ##snapshots:
+    ##  +transient: false
+    ##  +target_database: "{{ env_var('DBT_ENVIRONMENTS') }}SILVER_DB"
+    ##  +target_schema: snapshots

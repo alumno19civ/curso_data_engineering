@@ -5,7 +5,7 @@ with
 
     renamed_casted as (
         select
-            md5(promo_id) as promo_id
+            {{dbt_utils.generate_surrogate_key(['promo_id'])}} as promo_id
             , promo_id as description
             , discount_dollars --el descuento es el descuento total en dolares, no un porcentaje
             ,  case 
@@ -24,11 +24,16 @@ with
         , 0 as discount_dollars
         , 1 as status_id
         , false as date_deleted
-        , null as date_load
-    )
--- estamos creando un modelo de staging
-select *
+        , '2023-11-11' as date_load
+    ),
+
+     aaa as(
+        select *
 from renamed_casted
 union all
 select *
 from no_discount
+    )
+-- estamos creando un modelo de staging
+
+select * from aaa

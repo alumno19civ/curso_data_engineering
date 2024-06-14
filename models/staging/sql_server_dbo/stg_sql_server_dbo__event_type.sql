@@ -5,7 +5,7 @@ with
 
     event_type as (
         select distinct
-            md5(event_type) as event_type_id,
+            {{dbt_utils.generate_surrogate_key(['event_type'])}} as event_type_id,
             event_type
         from src_events
     )

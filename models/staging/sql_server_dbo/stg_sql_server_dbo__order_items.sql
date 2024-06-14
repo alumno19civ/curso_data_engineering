@@ -4,13 +4,15 @@ with
     ),
 
     renamed_casted as (
-        select
+        select distinct
+            {{dbt_utils.generate_surrogate_key(['order_id','product_id'])}} as order_item_id,            
             order_id,
             product_id,
             quantity,
             coalesce(_fivetran_deleted,false) as date_deleted,
             convert_timezone('UTC',_fivetran_synced)::date as date_load
         from src_order_items
+        
     )
 -- estamos creando un modelo de staging
 select *
