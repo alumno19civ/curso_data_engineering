@@ -124,6 +124,8 @@ models:
       - name: created_at
         data_type: date
         description: "timestamp indicating when the event was created"
+        tests:
+          - no_future_dates
 
       - name: order_id
         data_type: varchar
@@ -151,7 +153,7 @@ models:
     columns:
       - name: order_item_id
         data_type: varchar
-        description: "primary key: order_item"
+        description: "primary key: order_item. created created from order_id and product_id"
         tests:
           - unique
           - not_null
@@ -239,6 +241,8 @@ models:
       - name: created_at
         data_type: date
         description: "timestamp indicating when the order was created"
+        tests:
+          - no_future_dates
 
       - name: promo_id
         data_type: varchar
@@ -441,10 +445,17 @@ models:
       - name: estimated_delivery_at
         data_type: date
         description: "estimated date of delivery"
+        tests:
+          - no_future_dates
 
       - name: delivered_at
         data_type: date
         description: "Date of actual delivery"
+        tests:
+          - no_future_dates
+          - date_relationship:
+                  column_name: estimated_delivery_at
+                  extra_column: delivered_at
 
   - name: stg_sql_server_dbo__tracking_status
     description: "Collects shipping status types."
@@ -508,10 +519,19 @@ models:
       - name: created_at
         data_type: date
         description: "Date of creation of the user record"
-
+        tests:
+          - no_future_dates
+          - date_relationship:
+                  column_name: created_at
+                  extra_column: updated_at
       - name: updated_at
         data_type: date
         description: "Date of update od user data"
+        tests:
+          - no_future_dates
+          - date_relationship:
+                  column_name: created_at
+                  extra_column: updated_at
 
       - name: phone_number
         data_type: varchar
