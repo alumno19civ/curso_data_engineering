@@ -24,7 +24,7 @@ models:
         description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
-        data_type: date
+        data_type: _fivetran_synced
         description: "Data upload timestamp"
         tests:
           - not_null
@@ -119,7 +119,7 @@ models:
         description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
-        data_type: date
+        data_type: _fivetran_synced
         description: "Data upload timestamp"
         tests:
           - not_null
@@ -182,7 +182,7 @@ models:
         description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
-        data_type: date
+        data_type: _fivetran_synced
         description: "Data upload timestamp"
         tests:
           - not_null

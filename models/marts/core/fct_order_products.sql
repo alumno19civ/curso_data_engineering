@@ -1,3 +1,10 @@
+{{ config(
+    materialized='incremental',
+    unique_key = 'order_item_id'
+    ) 
+}}
+    
+   
 with 
     stg_orders as (
         select * from {{ ref("stg_sql_server_dbo__orders") }}  -- referencia al base que vamos a utilizar
@@ -13,7 +20,8 @@ with
 
     fct_order_products as (
         select
-            a.order_id
+            b.order_item_id
+            , a.order_id
             , b.product_id
             , a.user_id
             , a.address_id
@@ -28,6 +36,7 @@ with
             , a.order_total
             , round(a.order_total - (a.order_cost + a.shipping_cost)) as total_discount
             , b.created_at as date_of_order
+            , b.date_load
         from stg_orders a
         left join int_order_item_price b
             on a.order_id = b.order_id
@@ -38,3 +47,10 @@ with
 
 select * 
 from fct_order_products
+
+
+{% if is_incremental() %}
+
+  where date_load > (select max(date_load) from {{ this }})
+
+{% endif %}

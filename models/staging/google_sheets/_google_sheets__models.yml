@@ -47,7 +47,7 @@ models:
           - type: not_null
 
       - name: date_load
-        data_type: date
+        data_type: _fivetran_synced
         description: "Data upload"
         tests:
           - not_null

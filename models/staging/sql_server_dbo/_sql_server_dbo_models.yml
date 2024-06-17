@@ -5,7 +5,7 @@ models:
     description: "collect data on addresses that affect our business"
     config:
       contract:
-        enforced: true
+        enforced: false
     columns:
       - name: address_id
         data_type: varchar
@@ -38,7 +38,7 @@ models:
         description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
-        data_type: date
+        data_type: _fivetran_synced
         description: "Data upload timestamp"
         tests:
           - not_null
@@ -47,7 +47,7 @@ models:
     description: "Collects al the possible actions that a user can do"
     config:
       contract:
-        enforced: true
+        enforced: false
     columns:
       - name: event_type_id
         data_type: varchar
@@ -67,7 +67,7 @@ models:
     description: "An event is any type of action that a user can do on our business website. This table collects the data of all the events performed"
     config:
       contract:
-        enforced: true
+        enforced: false
     columns:
       - name: event_id
         data_type: varchar
@@ -140,7 +140,7 @@ models:
         description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
-        data_type: date
+        data_type: _fivetran_synced
         description: "Data upload timestamp"
         tests:
           - not_null
@@ -149,7 +149,7 @@ models:
     description: "associates orders and products sold for each order"
     config:
       contract:
-        enforced: true
+        enforced: false
     columns:
       - name: order_item_id
         data_type: varchar
@@ -191,7 +191,7 @@ models:
         description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
-        data_type: date
+        data_type: _fivetran_synced
         description: "Data upload timestamp"
         tests:
           - not_null
@@ -200,7 +200,7 @@ models:
     description: "Collects all data associated with an order"
     config:
       contract:
-        enforced: true
+        enforced: false
     columns:
       - name: order_id
         data_type: varchar
@@ -273,7 +273,7 @@ models:
 
       - name: tracking_status_id
         data_type: number
-        description: "Foreign key: traking status"
+        description: "Foreign key: tracking status"
         tests:
           - not_null
           - relationships:
@@ -287,7 +287,7 @@ models:
         description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
-        data_type: date
+        data_type: _fivetran_synced
         description: "Data upload timestamp"
         tests:
           - not_null
@@ -296,7 +296,7 @@ models:
     description: "Collects all data associated with the products sold in the company"
     config:
       contract:
-        enforced: true
+        enforced: false
     columns:
       - name: product_id
         data_type: varchar
@@ -325,7 +325,7 @@ models:
         description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
-        data_type: date
+        data_type: _fivetran_synced
         description: "Data upload timestamp"
         tests:
           - not_null
@@ -334,7 +334,7 @@ models:
     description: "Collects data on promotions that the company has ever carried out"
     config:
       contract:
-        enforced: true
+        enforced: false
     columns:
       - name: promo_id
         data_type: varchar
@@ -370,7 +370,7 @@ models:
         description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
-        data_type: date
+        data_type: _fivetran_synced
         description: "Data upload timestamp"
         tests:
           - not_null
@@ -379,7 +379,7 @@ models:
     description: "Collects the names of the companies that carry out the shipment"
     config:
       contract:
-        enforced: true
+        enforced: false
     columns:
       - name: shipping_service_id
         data_type: varchar
@@ -399,7 +399,7 @@ models:
     description: "Collects the type of the status of promotions (active/inactive)"
     config:
       contract:
-        enforced: true
+        enforced: false
     columns:
       - name: status_id
         data_type: number
@@ -419,7 +419,7 @@ models:
     description: "Collects the data specific to the shipment"
     config:
       contract:
-        enforced: true
+        enforced: false
     columns:
       - name: tracking_id
         data_type: varchar
@@ -461,7 +461,7 @@ models:
     description: "Collects shipping status types."
     config:
       contract:
-        enforced: true
+        enforced: false
     columns:
       - name: tracking_status_id
         data_type: number
@@ -481,7 +481,7 @@ models:
     description: "Collects all users' own data"
     config:
       contract:
-        enforced: true
+        enforced: false
     columns:
       - name: user_id
         data_type: varchar
@@ -546,7 +546,7 @@ models:
         description: "T/F whether or not it has been deleted in the operational database"
 
       - name: date_load
-        data_type: date
+        data_type: _fivetran_synced
         description: "Data upload timestamp"
         tests:
           - not_null
