@@ -11,32 +11,35 @@ sources:
       schema: false
       identifier: false
 
-  #  freshness:
-  #    warn_after: {count: 24, period: hour}
-  #    error_after: {count: 48, period: hour}
 
     tables:
 
       - name: budget
+        description: "Collects the monthly sales budget for each product"
         loaded_at_field: _fivetran_synced
         columns:
           - name: _row
+            description: "Identifier for each row in the table"
             tests:
             - not_null
             - unique
           - name: product_id
+            description: "Foreign key: products"
             tests:
              - not_null
              - relationships:
                 to: source('sql_server_dbo', 'products')
                 field: product_id 
           - name: quantity
+            description: "Budgeted sales quantity for the product for the specified month"
             tests:
             - not_null
-            ##- positive_values
+            - positive_values
           - name: month
+            description: "Month for which sales are budgeted"
             tests:
              - not_null
           - name: _fivetran_synced
+            description: "Data upload timestamp"
             tests:
              - not_null

@@ -9,165 +9,265 @@ sources:
       database: false
       schema: false
       identifier: false
-
-    # freshness:
-    #   warn_after: {count: 24, period: hour}
-    #   error_after: {count: 48, period: hour}
+      
 
     tables:
       - name: ADDRESSES #nombre de la tabla
         loaded_at_field: _fivetran_synced #herramienta de ingesta. tiene dos modalidades; sale como ultima/s columnas de las tablas (snowflake)
+        description: "collects data on addresses that affect our business"
         columns: #cada columna de la tabla name
           - name: address_id
+            description: "primary key: address"
             tests:
                 - not_null
                 - unique
           - name: zipcode
+            description: "5-digit numbers developed by the United States Postal Service to represent individual post offices across the United States"
+    ##        tests:
+    ##          - accepted_values: ##The postal code must contain exactly 5 digits between 0 and 9.
+    ##              values: ['^[0-9]{5}$']
           - name: country
+            description: "country"
           - name: address
+            description: "Number and street"
           - name: state
+            description: "state"
           - name: date_deleted
+            description: "T/F whether or not it has been deleted in the operational database"
           - name: _fivetran_synced
+            description: "Data upload timestamp"
             tests:
               - not_null
             
-          #habria que repetir esta estructura por cada tabla que tenga el schema en cuestion, sql_server_dbo en este caso:
+          #habria que repetir esta estructura por cada tabla que tenga el schema en cuestion, sql_server_dbo en este caso
       - name: EVENTS
         loaded_at_field: _fivetran_synced
+        description: "An event is any type of action that a user can do on our business website. This table collects the data of all the events performed"
         columns:
           - name: event_id
+            description: "primary key: event"
             tests:
                 - not_null
                 - unique
           - name: page_url
+            description: "URL of the page to which the event takes place"
           - name: event_type
+            description: "event type name (checkout, package_shipped, add_to_cart, page_view)"
           - name: user_id
+            description: "Foreign key: user"
             tests:
               - not_null
               - relationships:
                     to: source('sql_server_dbo', 'users')
                     field: user_id
           - name: product_id
+            description: "Foreign key: product. Not all events will have associated product, because not all events refers to a product"
             tests:
-              - not_null
               - relationships:
                     to: source('sql_server_dbo', 'products')
                     field: product_id
           - name: session_id
+            description: "Key of the session in which the event took place. Session refers to a user visit to the digital platform or website."
           - name: created_at
+            description: "timestamp indicating when the event was created"
+            tests:
+              - not_null
+              - no_future_dates
           - name: order_id
+            description: "Foreign key: order. Not all events will have associated order, because not all events generate an order"
             tests:
               - relationships:
                     to: source('sql_server_dbo', 'orders')
                     field: order_id
           - name: date_deleted
+            description: "T/F whether or not it has been deleted in the operational database"
           - name: _fivetran_synced
+            description: "Data upload timestamp"
             tests:
               - not_null
 
       - name: ORDERS
         loaded_at_field: _fivetran_synced
+        description: "Collects all data associated with an order"
         columns:
           - name: order_id
+            description: "primary key: orders"
             tests:
                 - not_null
                 - unique
           - name: shipping_service
+            description: "name of the company that carry out the shipment"
           - name: shipping_cost
+            description: "additional cost associated with shipping"
+            tests:
+              - positive_values
           - name: address_id
+            description: "Foreign key: address"
             tests:
               - not_null
               - relationships:
                     to: source('sql_server_dbo', 'addresses')
                     field: address_id
           - name: created_at
-          - name: promo_id
+            description: "timestamp indicating when the order was create"
             tests:
-              - not_null
+              - no_future_dates
+          - name: promo_id
+            description: "name of the promotion"
+            tests:
               - relationships:
                     to: source('sql_server_dbo', 'promos')
                     field: promo_id
           - name: estimated_delivery_at
+            description: "estimated date of delivery"
           - name: order_cost
+            description: "Total cost of the products sold without additional shipping costs"
+            tests:
+              - positive_values
           - name: user_id
+            description: "Foreign key: user"
             tests:
               - not_null
               - relationships:
                     to: source('sql_server_dbo', 'users')
                     field: user_id
           - name: order_total
+            description: "Total cost including shipping costs"
+            tests:
+              - positive_values
           - name: delivered_at
+            description: "Date of actual delivery"
+            tests:
+              - date_relationship:
+                  column_name: estimated_delivery_at
+                  extra_column: delivered_at
           - name: tracking_id
+            description: "Foreign key: tracking. Not all orders have a tracking id assigned to them because they have not been assigned to a shipping company (status = preparing)"
           - name: status
+            description: "type of status: preparing, shipped, delivered"
           - name: date_deleted
+            description: "T/F whether or not it has been deleted in the operational database"
           - name: _fivetran_synced
+            description: "Data upload timestamp"
             tests:
               - not_null
       - name: ORDER_ITEMS
         loaded_at_field: _fivetran_synced
+        description: "associates orders and products sold for each order"
         columns:
           - name: order_id
+            description: "Foreign key: order"
             tests:
-                - not_null
+              - not_null
+              - relationships:
+                    to: source('sql_server_dbo', 'orders')
+                    field: order_id
           - name: product_id
+            description: "Foreign key: product"
             tests:
               - not_null
               - relationships:
                     to: source('sql_server_dbo', 'products')
                     field: product_id
           - name: quantity
+            description: "Quantity of the same product sold in the same order"
+            tests:
+              - positive_values
           - name: date_deleted
+            description: "T/F whether or not it has been deleted in the operational database"
           - name: _fivetran_synced
+            description: "Data upload timestamp"
             tests:
              - not_null
       - name: PRODUCTS
         loaded_at_field: _fivetran_synced
+        description: "Collects all data associated with the products sold in the company"
         columns:
           - name: product_id
+            description: "primary key: product"
             tests:
                 - not_null
                 - unique
           - name: price
+            description: "price of the product"
+            tests:
+              - positive_values
           - name: name
+            description: "name of the product"
           - name: inventory
+            description: "number of units of the product in stock"
           - name: date_deleted
+            description: "T/F whether or not it has been deleted in the operational database"
           - name: _fivetran_synced
+            description: "Data upload timestamp"
             tests:
               - not_null
       - name: PROMOS
         loaded_at_field: _fivetran_synced
+        description: "Collects data on promotions that the company has ever carried out"
         columns:
           - name: promo_id
+            description: "name of the promotion"
             tests:
                 - not_null
                 - unique
           - name: discount
+            description: "total dollar discount"
           - name: status
+            description: "type of status: active/inactive"
           - name: date_deleted
+            description: "T/F whether or not it has been deleted in the operational database"
           - name: _fivetran_synced
+            description: "Data upload timestamp"
             tests:
               - not_null
       - name: USERS
-        loaded_at_field: _fivetran_synce
+        loaded_at_field: _fivetran_synced
+        description: "Collects all users' own data"
         columns:
           - name: user_id
+            description: "primary key: user"
             tests:
                 - not_null
                 - unique
           - name: updated_at
+            description: "Date of update of user data"
+            tests:
+              - date_relationship:
+                  column_name: created_at
+                  extra_column: updated_at
           - name: address_id
+            description: "Foreign key: address"
             tests:
               - not_null
               - relationships:
                     to: source('sql_server_dbo', 'addresses')
                     field: address_id
           - name: last_name
+            description: "User's last name"
+            tests:
+              - not_null
           - name: created_at
+            tests:
+              - date_relationship:
+                  column_name: created_at
+                  extra_column: updated_at
           - name: phone_number
+            description: "User's phone number"
           - name: total_orders
+            description: "User's total orders"
           - name: first_name
+            description: "User's first name"
+            tests:
+              - not_null
           - name: email
+            description: "User's email"
+            tests:
+              - not_null
+              - unique
           - name: date_deleted
+            description: "T/F whether or not it has been deleted in the operational database"
           - name: _fivetran_synced
+            description: "Data upload timestamp"
             tests:
               - not_null

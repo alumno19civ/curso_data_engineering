@@ -1,0 +1,188 @@
+version: 2
+
+models:
+  - name: base_sql_server_dbo__promos
+    description: "Collects data on promotions that the company has ever carried out"
+    columns:
+      - name: promo_id
+        data_type: varchar
+        description: "Name of the promotion"
+        tests:
+          - not_null
+          - unique
+
+      - name: discount_dollars
+        data_type: number
+        description: "Total dollar discount"
+
+      - name: status
+        data_type: varchar
+        description: "Type of status: active/inactive"
+
+      - name: date_deleted
+        data_type: boolean
+        description: "T/F whether or not it has been deleted in the operational database"
+
+      - name: date_load
+        data_type: date
+        description: "Data upload timestamp"
+        tests:
+          - not_null
+
+  - name: base_sql_server_dbo__orders
+    description: "Collects all data associated with an order"
+    columns:
+      - name: order_id
+        data_type: varchar
+        description: "Primary key: orders"
+        tests:
+          - not_null
+          - unique
+
+      - name: user_id
+        data_type: varchar
+        description: "Foreign key: user"
+        tests:
+          - not_null
+          - relationships:
+                to: source('sql_server_dbo', 'users')
+                field: user_id
+
+      - name: shipping_service
+        data_type: varchar
+        description: "Name of the company that carries out the shipment"
+
+      - name: shipping_cost
+        data_type: float
+        description: "Additional cost associated with shipping"
+        tests:
+          - positive_values
+          
+      - name: address_id
+        data_type: varchar
+        description: "Foreign key: address"
+        tests:
+          - not_null
+          - relationships:
+              to: source('sql_server_dbo', 'addresses')
+              field: address_id
+
+      - name: created_at
+        data_type: date
+        description: "Timestamp indicating when the order was created"
+        tests:
+          - not_null
+          - no_future_dates
+          
+      - name: promo_id
+        data_type: varchar
+        description: "Name of the promotion"
+        tests:
+          - relationships:
+              to: source('sql_server_dbo', 'promos')
+              field: promo_id
+
+      - name: estimated_delivery_at
+        data_type: date
+        description: "Estimated date of delivery"
+
+      - name: order_cost
+        data_type: float
+        description: "Total cost of the products sold without additional shipping costs"
+        tests:
+          - positive_values
+  
+      - name: order_total
+        data_type: float
+        description: "Total cost including shipping costs"
+        tests:
+          - positive_values
+
+      - name: delivered_at
+        data_type: date
+        description: "Date of actual delivery"
+        tests:
+          - date_relationship:
+              column_name: 'estimated_delivery_at'
+              extra_column: 'delivered_at'
+
+      - name: tracking_id
+        data_type: varchar
+        description: "Foreign key: tracking. Not all orders have a tracking ID assigned to them because they have not been assigned to a shipping company (status = preparing)"
+
+      - name: status
+        data_type: varchar
+        description: "Type of status: preparing, shipped, delivered"
+
+      - name: date_deleted
+        data_type: boolean
+        description: "T/F whether or not it has been deleted in the operational database"
+
+      - name: date_load
+        data_type: date
+        description: "Data upload timestamp"
+        tests:
+          - not_null
+
+  - name: base_sql_server_dbo__events
+    description: An event is any type of action that a user can do on our business website. This table collects the data of all the events performed"
+    columns:
+      - name: event_id
+        data_type: varchar
+        description: "Primary key: event"
+        tests:
+          - not_null
+          - unique
+
+      - name: page_url
+        data_type: varchar
+        description: "URL of the page to which the event takes place"
+
+      - name: event_type
+        data_type: varchar
+        description: "Event type name (checkout, package_shipped, add_to_cart, page_view)"
+
+      - name: user_id
+        data_type: varchar
+        description: "Foreign key: user"
+        tests:
+          - not_null
+          - relationships:
+              to: source('sql_server_dbo', 'users')
+              field: user_id
+
+      - name: product_id
+        data_type: varchar
+        description: "Foreign key: product. Not all events will have associated product, because not all events refer to a product"
+        tests:
+          - relationships:
+                to: source('sql_server_dbo', 'products')
+                field: product_id
+
+      - name: session_id
+        data_type: varchar
+        description: "Key of the session in which the event took place. Session refers to a user visit to the digital platform or website"
+
+      - name: created_at
+        data_type: date
+        description: "Timestamp indicating when the event was created"
+        tests:
+          - not_null
+          - no_future_dates
+
+      - name: order_id
+        data_type: varchar
+        description: "Foreign key: order. Not all events will have associated order, because not all events generate an order"
+        tests:
+          - relationships:
+                to: source('sql_server_dbo', 'orders')
+                field: order_id
+      - name: date_deleted
+        data_type: boolean
+        description: "T/F whether or not it has been deleted in the operational database"
+
+      - name: date_load
+        data_type: date
+        description: "Data upload timestamp"
+        tests:
+          - not_null

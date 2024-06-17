@@ -19,6 +19,7 @@ with
             , c.price
             , b.quantity * c.price as total_price_xproduct
             , round(a.shipping_cost*(b.quantity * c.price / a.order_cost),2) as shipping_cost_xproduct
+            , a.created_at
         from stg_orders a
         left join stg_order_items b
             on a.order_id = b.order_id

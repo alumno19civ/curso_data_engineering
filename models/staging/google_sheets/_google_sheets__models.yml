@@ -2,26 +2,54 @@ version: 2
 
 models:
   - name: stg_google_sheets_budget
-    description: >
-      Number of products sold per month.
+    description: "Collects the monthly sales budget for each product"
+    config:
+      contract:
+        enforced: true
+
     columns:
       - name: _row
+        data_type: integer
+        description: "Identifier for each row in the table"
         tests:
           - not_null
           - unique
-      - name: product_id         
+        constraints:
+          - type: not_null
+          - type: unique
+
+      - name: product_id        
+        data_type: varchar
+        description: "Foreign key: products"
         tests:
           - not_null
           - relationships:
                 to: ref('stg_sql_server_dbo__products')
                 field: product_id  
+        constraints:
+          - type: not_null
+
       - name: quantity
+        data_type: integer
+        description: "Budgeted sales quantity for the product for the specified month"
         tests:
           - not_null
-          - positive_values    
+          - positive_values
+        constraints:
+          - type: not_null
+
       - name: month
+        data_type: date
+        description: "Month for which sales are budgeted"
         tests:
           - not_null
+        constraints:
+          - type: not_null
+
       - name: date_load
+        data_type: date
+        description: "Data upload"
         tests:
           - not_null
+        constraints:
+          - type: not_null
