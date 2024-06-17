@@ -63,7 +63,6 @@ sources:
           - name: product_id
             description: "Foreign key: product. Not all events will have associated product, because not all events refers to a product"
             tests:
-              - not_null
               - relationships:
                     to: source('sql_server_dbo', 'products')
                     field: product_id
@@ -72,6 +71,7 @@ sources:
           - name: created_at
             description: "timestamp indicating when the event was created"
             tests:
+              - not_null
               - no_future_dates
           - name: order_id
             description: "Foreign key: order. Not all events will have associated order, because not all events generate an order"
@@ -115,7 +115,6 @@ sources:
           - name: promo_id
             description: "name of the promotion"
             tests:
-              - not_null
               - relationships:
                     to: source('sql_server_dbo', 'promos')
                     field: promo_id
@@ -159,7 +158,10 @@ sources:
           - name: order_id
             description: "Foreign key: order"
             tests:
-                - not_null
+              - not_null
+              - relationships:
+                    to: source('sql_server_dbo', 'orders')
+                    field: order_id
           - name: product_id
             description: "Foreign key: product"
             tests:
