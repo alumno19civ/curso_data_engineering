@@ -21,7 +21,7 @@ with
             nullif(tracking_id,'') as tracking_id,
             status,
             coalesce(_fivetran_deleted,false) as date_deleted,
-            convert_timezone('UTC',_fivetran_synced)::date as date_load
+            convert_timezone('UTC',_fivetran_synced) as date_load
         from src_orders
     )
 

@@ -21,5 +21,5 @@
 {{ codegen.generate_model_yaml(
     model_names= ['dim_addresses','dim_products','dim_promo','dim_event_type',
     'dim_shipping_service','dim_status','dim_time','dim_users','dim_budget',
-    'dim_tracking_status','fct_order_products']
+    'dim_tracking_status','fct_order_products','fct_monthly_sales_forecast']
 ) }}

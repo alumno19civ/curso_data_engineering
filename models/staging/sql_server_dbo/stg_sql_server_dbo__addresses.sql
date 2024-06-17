@@ -15,7 +15,7 @@ with
             address,
             state,
             coalesce(_fivetran_deleted,false) as date_deleted,
-            convert_timezone('UTC',_fivetran_synced)::date as date_load
+            convert_timezone('UTC',_fivetran_synced) as date_load
         from src_addresses
     )
 -- estamos creando un modelo de staging

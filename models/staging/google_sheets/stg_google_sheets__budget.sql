@@ -18,7 +18,7 @@ renamed_casted AS (
         , product_id
         , quantity
         , month
-        , convert_timezone('UTC',_fivetran_synced)::date as date_load
+        , convert_timezone('UTC',_fivetran_synced) as date_load
     FROM src_budget
     )
 --estamos creando un modelo de staging
