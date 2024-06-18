@@ -8,7 +8,7 @@ with
             promo_id
             , description
             , discount_dollars --el descuento es el descuento total en dolares, no un porcentaje
-            , status_id as status
+            , status_id
         from stg_promos
     )
 -- estamos creando un modelo de staging

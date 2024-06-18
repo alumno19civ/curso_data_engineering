@@ -38,6 +38,8 @@ sources:
             description: "Data upload timestamp"
             tests:
               - not_null
+          - name: latitud
+          - name: longitud
             
           #habria que repetir esta estructura por cada tabla que tenga el schema en cuestion, sql_server_dbo en este caso
       - name: EVENTS
@@ -85,6 +87,7 @@ sources:
             description: "Data upload timestamp"
             tests:
               - not_null
+          - name: proveedor
 
       - name: ORDERS
         loaded_at_field: _fivetran_synced
@@ -271,3 +274,23 @@ sources:
             description: "Data upload timestamp"
             tests:
               - not_null
+
+      - name: PROVEEDORES
+        loaded_at_field: _fivetran_synced
+        description: "PROVEEDORES"
+        columns:
+          - name: proveedores_id
+            description: "primary key: proveedores"
+            tests:
+                - not_null
+                - unique
+          - name: first_name
+            description: ""
+          - name: last_name
+            description: ""
+          - name: email
+            description: ""
+          - name: address
+            description: ""
+          - name: data_load
+            description: ""

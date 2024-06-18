@@ -9,6 +9,7 @@ with
             price,
             name,
             inventory,
+            proveedor,
             coalesce(_fivetran_deleted,false) as date_deleted,
             convert_timezone('UTC',_fivetran_synced) as date_load -- hacemos el cambio de zona horaria porque no era el correcto; ahora en la tabla sale '20-....00+00:00'
         from src_products

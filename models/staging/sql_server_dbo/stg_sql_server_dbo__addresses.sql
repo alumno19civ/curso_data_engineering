@@ -14,6 +14,8 @@ with
             country,
             address,
             state,
+            latitud,
+            longitud,
             coalesce(_fivetran_deleted,false) as date_deleted,
             convert_timezone('UTC',_fivetran_synced) as date_load
         from src_addresses
