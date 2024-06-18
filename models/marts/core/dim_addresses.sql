@@ -9,7 +9,9 @@ with
             address,
             zipcode,
             state,
-            country            
+            country,
+            latitud,
+            longitud           
         from stg_addresses
     )
 -- estamos creando un modelo de staging

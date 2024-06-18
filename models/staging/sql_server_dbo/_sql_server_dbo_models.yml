@@ -32,6 +32,11 @@ models:
       - name: state
         data_type: varchar
         description: "state"
+      
+      - name: latitud
+        data_type: number(6)
+      - name: longitud
+        data_type: number(6)
 
       - name: date_deleted
         data_type: boolean
@@ -257,7 +262,7 @@ models:
 
       - name: order_cost
         data_type: float
-        description: "Total cost of the products sold without additional shipping costs"
+        description: "Total cost of products sold without additional shipping costs"
 
       - name: order_total
         data_type: float
@@ -319,6 +324,9 @@ models:
       - name: inventory
         data_type: number
         description: "number of units of the product in stock"
+
+      - name: proveedor
+        data_type: number
 
       - name: date_deleted
         data_type: boolean

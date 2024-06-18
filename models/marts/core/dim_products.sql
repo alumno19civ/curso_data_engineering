@@ -8,7 +8,8 @@ with
             product_id,
             name,
             price,
-            inventory
+            inventory,
+            {{ dbt_utils.generate_surrogate_key(['proveedor']) }} as proveedores_id,
         from stg_products
     )
 -- estamos creando un modelo de staging
