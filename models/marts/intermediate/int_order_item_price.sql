@@ -1,17 +1,17 @@
 with 
     stg_orders as (
-        select * from {{ ref("stg_sql_server_dbo__orders") }}  -- referencia al base que vamos a utilizar
+        select * from {{ ref("stg_sql_server_dbo__orders") }} 
     ),
 
     stg_order_items as (
-        select * from {{ ref("stg_sql_server_dbo__order_items") }}  -- referencia al base que vamos a utilizar
+        select * from {{ ref("stg_sql_server_dbo__order_items") }} 
     ),
 
     stg_products as (
-        select * from {{ ref("stg_sql_server_dbo__products") }}  -- referencia al base que vamos a utilizar
+        select * from {{ ref("stg_sql_server_dbo__products") }} 
     ),
 
-    fct_order_products as (
+    int_order_products as (
         select
             b.order_item_id
             , a.order_id
@@ -31,4 +31,4 @@ with
     )
 
 select * 
-from fct_order_products
+from int_order_products

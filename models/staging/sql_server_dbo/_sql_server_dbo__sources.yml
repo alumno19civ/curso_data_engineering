@@ -23,9 +23,6 @@ sources:
                 - unique
           - name: zipcode
             description: "5-digit numbers developed by the United States Postal Service to represent individual post offices across the United States"
-    ##        tests:
-    ##          - accepted_values: ##The postal code must contain exactly 5 digits between 0 and 9.
-    ##              values: ['^[0-9]{5}$']
           - name: country
             description: "country"
           - name: address
@@ -142,7 +139,7 @@ sources:
             description: "Date of actual delivery"
             tests:
               - date_relationship:
-                  column_name: estimated_delivery_at
+                  column_name: created_at
                   extra_column: delivered_at
           - name: tracking_id
             description: "Foreign key: tracking. Not all orders have a tracking id assigned to them because they have not been assigned to a shipping company (status = preparing)"
@@ -275,22 +272,36 @@ sources:
             tests:
               - not_null
 
+
       - name: PROVEEDORES
         loaded_at_field: _fivetran_synced
-        description: "PROVEEDORES"
+        description: "Table containing supplier information"
         columns:
           - name: proveedores_id
-            description: "primary key: proveedores"
+            description: "Primary key for the suppliers"
             tests:
-                - not_null
-                - unique
+            - not_null
+            - unique
+
           - name: first_name
-            description: ""
+            description: "Supplier's first name"
+            tests:
+              - not_null
+
           - name: last_name
-            description: ""
+            description: "Supplier's last name"
+            tests:
+              - not_null
+
           - name: email
-            description: ""
+            description: "Supplier's email address"
+            tests:
+              - not_null
+
           - name: address
-            description: ""
+            description: "Supplier's physical address"
+
           - name: data_load
-            description: ""
+            description: "Timestamp when the data was loaded"
+            tests:
+              - not_null

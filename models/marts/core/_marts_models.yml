@@ -7,22 +7,41 @@ models:
       - name: address_id
         data_type: varchar
         description: "Primary key for the address"
+        tests:
+          - unique
+          - not_null
 
       - name: address
         data_type: varchar
         description: "Full address including number and street"
+        tests:
+          - not_null
 
       - name: zipcode
         data_type: number
         description: "Postal code for the address"
+        tests:
+          - not_null
 
       - name: state
         data_type: varchar
         description: "State"
+        tests:
+          - not_null
 
       - name: country
         data_type: varchar
         description: "Country"
+        tests:
+          - not_null
+
+      - name: latitud
+        data_type: number(6)
+        description: "Latitude coordinates"
+
+      - name: longitud
+        data_type: number(6)
+        description: "Longitude coordinates"
 
   - name: dim_products
     description: "Dimension table containing product information"
@@ -30,14 +49,22 @@ models:
       - name: product_id
         data_type: varchar
         description: "Primary key for the product"
+        tests:
+          - unique
+          - not_null
 
       - name: name
         data_type: varchar
         description: "Name of the product"
+        tests:
+          - not_null
 
       - name: price
         data_type: float
         description: "Price of the product"
+        tests:
+          - not_null
+          - positive_values
 
       - name: inventory
         data_type: number
@@ -49,18 +76,30 @@ models:
       - name: promo_id
         data_type: varchar
         description: "Primary key for the promotion"
+        tests:
+          - unique
+          - not_null
 
       - name: description
         data_type: varchar
         description: "Name of the promotion"
+        tests:
+          - not_null
 
       - name: discount_dollars
         data_type: number
         description: "Total dollar discount"
+        tests:
+          - not_null
 
       - name: status_id
         data_type: number
         description: "Foreign key: Status of the promotion (active/inactive)"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_status')
+              field: status_id
 
   - name: dim_event_type
     description: "Dimension table containing event type information (al the possible actions that a user can do)"
@@ -68,10 +107,15 @@ models:
       - name: event_type_id
         data_type: varchar
         description: "Primary key for the event type"
+        tests:
+          - unique
+          - not_null
 
       - name: event_type
         data_type: varchar
         description: "Type of event"
+        tests:
+          - not_null
 
   - name: dim_shipping_service
     description: "Dimension table containing shipping service information"
@@ -79,10 +123,15 @@ models:
       - name: shipping_service_id
         data_type: varchar
         description: "Primary key for the shipping service"
+        tests:
+          - unique
+          - not_null
 
       - name: shipping_service
         data_type: varchar
         description: "Name of the company that carry out the shipment"
+        tests:
+          - not_null
 
   - name: dim_status
     description: "Dimension table containing status information."
@@ -90,10 +139,15 @@ models:
       - name: status_id
         data_type: number
         description: "Primary key for the status."
+        tests:
+          - unique
+          - not_null
 
       - name: description
         data_type: varchar
         description: "status of the promotion (active/inactive)."
+        tests:
+          - not_null
 
   - name: dim_time
     description: "Dimension table containing time information"
@@ -144,14 +198,21 @@ models:
       - name: user_id
         data_type: varchar
         description: "Primary key for the use"
+        tests:
+          - unique
+          - not_null
 
       - name: first_name
         data_type: varchar
         description: "User's first name"
+        tests:
+          - not_null
 
       - name: last_name
         data_type: varchar
         description: "User's last name"
+        tests:
+          - not_null
 
       - name: email
         data_type: varchar
@@ -163,15 +224,9 @@ models:
 
       - name: total_orders
         data_type: number
-        description: "User's total orders"  
-
-      - name: created_at
-        data_type: date
-        description: "Date of creation of the user record"
-        
-      - name: updated_at
-        data_type: date
-        description: "Date of update od user data"
+        description: "User's total orders"
+        tests:
+          - not_null
 
 
   - name: dim_tracking_status
@@ -180,10 +235,15 @@ models:
       - name: tracking_status_id
         data_type: number
         description: "Primary key for the tracking status"
+        tests:
+          - unique
+          - not_null
 
       - name: description
         data_type: varchar
         description: "type of status: preparing, shipped, delivered"
+        tests:
+          - not_null
 
   - name: fct_order_products
     description: "Fact table containing order product information"
@@ -191,70 +251,136 @@ models:
       - name: order_item_id
         data_type: varchar
         description: "Primary key for item per order."
+        tests:
+          - unique
+          - not_null
 
       - name: order_id
         data_type: varchar
         description: "Foreign key of the order"
+        tests:
+          - not_null
 
       - name: product_id
         data_type: varchar
         description: "Foreign key: ID of the product"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_products')
+              field: product_id
 
       - name: user_id
         data_type: varchar
         description: "Foreign key: ID of the user"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_users')
+              field: user_id
 
       - name: address_id
         data_type: varchar
         description: "Foreign key: ID of the address"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_addresses')
+              field: address_id
 
       - name: promo_id
         data_type: varchar
         description: "Foreign key: ID of the promotion"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_promo')
+              field: promo_id
 
       - name: tracking_status_id
         data_type: number
         description: "Foreign key: ID of the tracking status"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_tracking_status')
+              field: tracking_status_id
+
 
       - name: shipping_service_id
         data_type: varchar
         description: "Foreign key: ID of the shipping service"
+        tests:
+          - relationships:
+              to: ref('dim_shipping_service')
+              field: shipping_service_id
 
       - name: quantity
         data_type: number
         description: "Quantity of the product ordered"
+        tests:
+          - not_null
+          - positive_values
 
       - name: total_price_xproduct
         data_type: float
         description: "price for the whole of a product type in a order"
+        tests:
+          - not_null
+          - positive_values
 
       - name: order_cost
         data_type: float
         description: "Total cost of products sold without additional shipping costs"
+        tests:
+          - not_null
+          - positive_values
 
       - name: shipping_cost_xproduct
         data_type: float
         description: "Shipping cost for the product"
+        tests:
+          - not_null
+          - positive_values
 
       - name: shipping_cost
         data_type: float
         description: "Total shipping cost"
+        tests:
+          - not_null
+          
 
       - name: order_total
         data_type: float
         description: "Total cost including shipping costs"
+        tests:
+          - not_null
+          - positive_values
 
       - name: total_discount
         data_type: float
         description: "Total discount applied in that product"
+        tests:
+          - not_null
 
       - name: date_of_order
         data_type: date
         description: "Date when the order was placed."
+        tests:
+          - not_null
+          - no_future_dates
+
+      - name: delivered_at
+        data_type: data
+        description: "Date of actual delivery"
+        tests:
+          - no_future_dates
 
       - name: date_load
         data_type: timestamp_tz
         description: "Timestamp when the data was loaded."
+        tests:
+          - not_null
 
   - name: fct_budget
     description: "Fact table containing budget information."
@@ -262,22 +388,38 @@ models:
       - name: _row
         data_type: number
         description: "Row number for internal use."
+        tests:
+          - unique
+          - not_null
 
       - name: product_id
         data_type: varchar
         description: "Foreign key: ID of the product."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_products')
+              field: product_id
 
       - name: quantity
         data_type: number
         description: "Budgeted quantity of the product."
+        tests:
+          - not_null
+          - positive_values
 
       - name: month
         data_type: date
         description: "Month for the budgeted quantity."
+        tests:
+          - not_null
+          - no_future_dates
 
       - name: date_load
         data_type: timestamp_tz
         description: "Timestamp when the data was loaded."
+        tests:
+          - not_null
   
   - name: fct_events
     description: "Fact table containing events information."
@@ -285,35 +427,66 @@ models:
       - name: event_id
         data_type: varchar
         description: "Primary key for the event."
+        tests:
+          - unique
+          - not_null
 
       - name: event_type_id
         data_type: varchar
         description: "Foreign key: ID of the event type."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_event_type')
+              field: event_type_id
 
       - name: user_id
         data_type: varchar
         description: "Foreign key: ID of the user who triggered the event."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_users')
+              field: user_id
 
       - name: session_id
         data_type: varchar
         description: "ID of the session during which the event occurred."
+        tests:
+          - not_null
 
       - name: page_url
         data_type: varchar
         description: "URL of the page where the event occurred."
+        tests:
+          - not_null
 
       - name: product_id
         data_type: varchar
         description: "Foreign key: ID of the product related to the event, if applicable."
+        tests:
+          - relationships:
+              to: ref('dim_products')
+              field: product_id
 
       - name: order_id
         data_type: varchar
         description: "Foreign key: ID of the order related to the event, if applicable."
+        tests:
+          - relationships:
+              to: ref('stg_sql_server_dbo__orders')
+              field: order_id
 
       - name: created_at
         data_type: date
         description: "Timestamp when the event was created."
+        tests:
+          - not_null
+          - no_future_dates
+
 
       - name: date_load
         data_type: timestamp_tz
         description: "Timestamp when the event data was loaded."
+        tests:
+          - not_null

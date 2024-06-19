@@ -1,0 +1,70 @@
+version: 2
+
+models:
+  - name: int_order_item_price
+    description: ""
+    columns:
+      - name: order_item_id
+        data_type: varchar
+        description: "Primary key: order item. Created from order_id and product_id"
+        tests:
+          - unique
+          - not_null
+      - name: order_id
+        data_type: varchar
+        description: "Foreign key: order"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_sql_server_dbo__orders')
+              field: order_id
+
+      - name: product_id
+        data_type: varchar
+        description: "Foreign key: product"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_sql_server_dbo__products')
+              field: product_id
+
+      - name: quantity
+        data_type: number
+        description: "Quantity of the same product sold in the same order"
+        tests:
+          - not_null
+          - positive_values
+
+      - name: price
+        data_type: float
+        description: "Price of a single unit of the product"
+        tests:
+          - not_null
+          - positive_values
+
+      - name: total_price_xproduct
+        data_type: float
+        description: "Total price for the quantity of products in the order"
+        tests:
+          - not_null
+          - positive_values
+
+      - name: shipping_cost_xproduct
+        data_type: float
+        description: "Shipping cost allocated to the product"
+        tests:
+          - not_null
+          - positive_values
+
+      - name: created_at
+        data_type: date
+        description: "Timestamp indicating when the order item was created"
+        tests:
+          - not_null
+          - no_future_dates
+
+      - name: date_load
+        data_type: timestamp_tz
+        description: "Data upload timestamp"
+        tests:
+          - not_null

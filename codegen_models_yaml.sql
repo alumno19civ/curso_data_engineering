@@ -23,3 +23,8 @@
     'dim_shipping_service','dim_status','dim_time','dim_users','fct_budget',
     'dim_tracking_status','fct_order_products','fct_events']
 ) }}
+
+-- codegen intermediates
+{{ codegen.generate_model_yaml(
+    model_names= ['int_order_item_price']
+) }}

@@ -190,6 +190,8 @@ models:
       - name: quantity
         data_type: number
         description: "Quantity of the same product sold in the same order"
+        tests:
+          - positive_values
 
       - name: date_deleted
         data_type: boolean
@@ -231,6 +233,8 @@ models:
       - name: shipping_cost
         data_type: float
         description: "additional cost associated with shipping"
+        tests:
+          - positive_values
 
       - name: address_id
         data_type: varchar
@@ -263,10 +267,14 @@ models:
       - name: order_cost
         data_type: float
         description: "Total cost of products sold without additional shipping costs"
+        tests:
+          - positive_values
 
       - name: order_total
         data_type: float
         description: "Total cost including shipping costs"
+        tests:
+          - positive_values
 
       - name: tracking_id
         data_type: varchar
@@ -316,6 +324,8 @@ models:
       - name: price
         data_type: float
         description: "price of the product"
+        tests:
+          - positive_values
 
       - name: name
         data_type: varchar
@@ -462,7 +472,7 @@ models:
         tests:
           - no_future_dates
           - date_relationship:
-                  column_name: estimated_delivery_at
+                  column_name: created_at
                   extra_column: delivered_at
 
   - name: stg_sql_server_dbo__tracking_status

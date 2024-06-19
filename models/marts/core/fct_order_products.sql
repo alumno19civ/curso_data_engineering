@@ -36,6 +36,7 @@ with
             , a.order_total
             , round(a.order_total - (a.order_cost + a.shipping_cost)) as total_discount
             , b.created_at as date_of_order
+            , c.delivered_at
             , b.date_load
         from stg_orders a
         left join int_order_item_price b
