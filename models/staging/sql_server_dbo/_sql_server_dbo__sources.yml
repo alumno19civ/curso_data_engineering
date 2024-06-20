@@ -36,7 +36,9 @@ sources:
             tests:
               - not_null
           - name: latitud
+            data_type: number(6)
           - name: longitud
+            data_type: number(6)
             
           #habria que repetir esta estructura por cada tabla que tenga el schema en cuestion, sql_server_dbo en este caso
       - name: EVENTS
@@ -120,6 +122,10 @@ sources:
                     field: promo_id
           - name: estimated_delivery_at
             description: "estimated date of delivery"
+            tests:
+              - date_relationship:
+                  column_name: created_at
+                  extra_column: estimated_delivery_at
           - name: order_cost
             description: "Total cost of the products sold without additional shipping costs"
             tests:

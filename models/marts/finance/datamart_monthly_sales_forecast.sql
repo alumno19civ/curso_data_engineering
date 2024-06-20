@@ -12,7 +12,7 @@ with
         from {{ ref('fct_order_products') }}
     ),
 
-    stg_budget as (
+    fct_budget as (
         select * from {{ ref('fct_budget') }}
     ),
 
@@ -31,7 +31,7 @@ with
         from dim_products as a
         inner join fct_op as b
             on a.product_id = b.product_id
-        inner join stg_budget as c
+        inner join fct_budget as c
             on a.product_id = c.product_id
     )
 
